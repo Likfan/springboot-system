@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lkf.system.mapper.SysUserMapper">
+
+    <resultMap id="userMap" type="com.lkf.model.system.SysUser" autoMapping="true"></resultMap>
+
+    <select id="selectPage" resultMap="userMap">
+        SELECT id,username,PASSWORD,NAME,phone,head_url,dept_id,post_id,description,STATUS,create_time,update_time,is_deleted FROM sys_user
+        <where>
+            <if test="sysUserQueryVo.keyword != null and vsysUserQueryVoo.keyword != ''">
+                and (username like CONCAT('%',#{sysUserQueryVo.keyword},'%') or  name like CONCAT('%',#{sysUserQueryVo.keyword},'%') or phone like CONCAT('%',#{sysUserQueryVo.keyword},'%'))
+            </if>
+            <if test="sysUserQueryVo.createTimeBegin != null and sysUserQueryVo.createTimeBegin != ''">
+                and create_time >= #{sysUserQueryVo.createTimeBegin}
+            </if>
+            <if test="sysUserQueryVo.createTimeEnd != null and sysUserQueryVo.createTimeEnd != ''">
+                and create_time &lt;= #{sysUserQueryVo.createTimeEnd}
+            </if>
+            and is_deleted = 0
+        </where>
+        order by id desc
+    </select>
+</mapper>
